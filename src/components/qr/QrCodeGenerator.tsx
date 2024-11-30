@@ -1,6 +1,15 @@
 import React, { useEffect, useRef } from 'react'
-import QRCodeStyling from 'qr-code-styling'
-import { DotType, CornerDotType } from 'qr-code-styling'
+import QRCodeStyling, { DotType } from 'qr-code-styling'
+import { CornerDotType } from 'qr-code-styling'
+
+interface Gradient {
+  type: 'linear' | 'radial'
+  rotation: number
+  colorStops: Array<{
+    offset: number
+    color: string
+  }>
+}
 
 type QrCodeGeneratorProps = {
   backgroundColor?: string
@@ -8,10 +17,11 @@ type QrCodeGeneratorProps = {
   width?: number
   height?: number
   dotColor?: string
-  dotType?: DotType
   cornerSquareColor?: string
   cornersDotColor?: string
+  dotType?: DotType
   cornersDotType?: CornerDotType
+  dotGradient?: Gradient | null
 }
 
 const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({
@@ -22,8 +32,9 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({
   dotColor = '#000000',
   cornerSquareColor = '#000000',
   cornersDotColor = '#000000',
-  dotType = 'classy',
-  cornersDotType = 'dot'
+  dotType = 'rounded',
+  cornersDotType = 'dot',
+  dotGradient = undefined
 }) => {
   const qrCodeRef = useRef<HTMLDivElement>(null)
   const qrCodeInstance = useRef<QRCodeStyling>()
@@ -34,8 +45,8 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({
       height,
       data,
       dotsOptions: {
-        color: dotColor,
-        type: dotType
+        type: dotType,
+        color: dotColor
       },
       cornersDotOptions: { color: cornersDotColor, type: cornersDotType },
       cornersSquareOptions: { color: cornerSquareColor },
@@ -43,24 +54,27 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({
         color: backgroundColor
       }
     })
-    8
     if (qrCodeRef.current) {
       qrCodeInstance.current.append(qrCodeRef.current)
     }
-  }, [data, width, height, dotColor, backgroundColor, cornerSquareColor, cornersDotColor])
+  }, [data, width, height, dotColor, backgroundColor, cornerSquareColor, cornersDotColor, dotType, cornersDotType])
 
   // QR kodu yenilemek için
   useEffect(() => {
     if (qrCodeInstance.current) {
       qrCodeInstance.current.update({
         data,
-        dotsOptions: { color: dotColor },
+        dotsOptions: {
+          type: dotType,
+          color: dotColor,
+          gradient: dotGradient || undefined // null ise undefined'a dönüştür
+        },
         cornersDotOptions: { color: cornersDotColor, type: cornersDotType },
         cornersSquareOptions: { color: cornerSquareColor },
         backgroundOptions: { color: backgroundColor }
       })
     }
-  }, [data, dotColor, backgroundColor, cornerSquareColor, cornersDotColor, cornersDotType])
+  }, [data, dotColor, backgroundColor, cornerSquareColor, cornersDotColor, cornersDotType, dotType, dotGradient])
 
   return <div ref={qrCodeRef} />
 }

@@ -14,9 +14,8 @@ export default function QRGeneratorPage() {
     setTabValue(newValue)
   }
 
-  const handleGenerate = (data: any) => {
-    console.log('Generated QR data:', data)
-    // Burada QR kod oluşturma sonrası işlemler yapılabilir
+  const handleGenerate = () => {
+    console.log('Generated QR data:')
   }
 
   return (

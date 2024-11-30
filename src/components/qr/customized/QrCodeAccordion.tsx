@@ -5,7 +5,8 @@ import MuiAccordion, { AccordionProps } from '@mui/material/Accordion'
 import MuiAccordionSummary, { AccordionSummaryProps, accordionSummaryClasses } from '@mui/material/AccordionSummary'
 import MuiAccordionDetails from '@mui/material/AccordionDetails'
 import Typography from '@mui/material/Typography'
-import QrCodeChangeColor from './components/QrCodeChangeColor'
+import QrCodeDotOptions from './components/QrCodeDotOptions'
+import { DotType } from 'qr-code-styling'
 
 const Accordion = styled((props: AccordionProps) => <MuiAccordion disableGutters elevation={0} square {...props} />)(
   ({ theme }) => ({
@@ -40,19 +41,34 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: '1px solid rgba(0, 0, 0, .125)'
 }))
 
+interface GradientConfig {
+  type: 'linear' | 'radial'
+  rotation: number
+  colorStops: Array<{
+    offset: number
+    color: string
+  }>
+}
+
 interface CustomizeProps {
   dotColor: string
   cornerSquareColor: string
   cornersDotColor: string
+  dotShape: string
+  dotType: DotType
+  dotGradient: GradientConfig | null
 
   setDotColor: (val: string) => void
   setCornerSquareColor: (val: string) => void
   setCornersDotColor: (val: string) => void
+  setDotShape: (val: string) => void
+  setDotType: (val: DotType) => void // DotType olarak güncelledik
+  setDotGradient: (gradient: GradientConfig | null) => void
 }
 
 export default function CustomizedAccordions(props: CustomizeProps) {
-  const { dotColor, cornerSquareColor, cornersDotColor } = props
-  const { setDotColor, setCornerSquareColor, setCornersDotColor } = props
+  const { dotColor, dotType, dotGradient } = props
+  const { setDotColor, setDotType, setDotGradient } = props
 
   const [expanded, setExpanded] = React.useState<string | false>('')
 
@@ -67,75 +83,21 @@ export default function CustomizedAccordions(props: CustomizeProps) {
           <Typography>Colors</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <QrCodeChangeColor
+          <QrCodeDotOptions
+            dotType={dotType}
             dotColor={dotColor}
-            cornerSquareColor={cornerSquareColor}
-            cornersDotColor={cornersDotColor}
+            dotGradient={dotGradient}
             setDotColor={setDotColor}
-            setCornerSquareColor={setCornerSquareColor}
-            setCornersDotColor={setCornersDotColor}
+            setDotType={setDotType}
+            setDotGradient={setDotGradient}
           />
         </AccordionDetails>
       </Accordion>
       <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
         <AccordionSummary aria-controls='panel2d-content' id='panel2d-header'>
-          <Typography>Collapsible Group Item #2</Typography>
+          <Typography>Shapes</Typography>
         </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit
-            leo lobortis eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
-        <AccordionSummary aria-controls='panel3d-content' id='panel3d-header'>
-          <Typography>Collapsible Group Item #3</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit
-            leo lobortis eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion expanded={expanded === 'panel4'} onChange={handleChange('panel3')}>
-        <AccordionSummary aria-controls='panel3d-content' id='panel3d-header'>
-          <Typography>Collapsible Group Item #3</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit
-            leo lobortis eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion expanded={expanded === 'panel5'} onChange={handleChange('panel3')}>
-        <AccordionSummary aria-controls='panel3d-content' id='panel3d-header'>
-          <Typography>Collapsible Group Item #3</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit
-            leo lobortis eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion expanded={expanded === 'panel6'} onChange={handleChange('panel3')}>
-        <AccordionSummary aria-controls='panel3d-content' id='panel3d-header'>
-          <Typography>Collapsible Group Item #3</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit
-            leo lobortis eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
+        <AccordionDetails></AccordionDetails>
       </Accordion>
     </div>
   )
