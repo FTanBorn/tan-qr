@@ -10,6 +10,7 @@ import { DotType, CornerSquareType, CornerDotType } from 'qr-code-styling'
 import QrCodeCornersSquareOptions from './components/QrCodeCornersSquareOptions '
 import { GradientConfig } from '../types'
 import QrCodeCornersDotOptions from './components/QrCodeCornersDotOptions'
+import QrCodeBackgroundOptions from './components/QrCodeBackgroundOptions'
 
 const Accordion = styled((props: AccordionProps) => <MuiAccordion disableGutters elevation={0} square {...props} />)(
   ({ theme }) => ({
@@ -68,6 +69,12 @@ interface CustomizeProps {
   setCornersDotColor: (val: string) => void
   setCornersDotType: (val: CornerDotType) => void
   setCornersDotGradient: (gradient: GradientConfig | null) => void
+
+  // Backgroun Options
+  backgroundColor: string
+  backgroundGradient: GradientConfig | null
+  setBackgroundColor: (val: string) => void
+  setBackgroundGradient: (gradient: GradientConfig | null) => void
 }
 
 export default function CustomizedAccordions(props: CustomizeProps) {
@@ -93,6 +100,9 @@ export default function CustomizedAccordions(props: CustomizeProps) {
     setCornersDotType,
     setCornersDotGradient
   } = props
+
+  // Background Options Props
+  const { backgroundColor, backgroundGradient, setBackgroundColor, setBackgroundGradient } = props
 
   const [expanded, setExpanded] = React.useState<string | false>('')
 
@@ -145,6 +155,20 @@ export default function CustomizedAccordions(props: CustomizeProps) {
             setCornersDotType={setCornersDotType}
             setCornersDotColor={setCornersDotColor}
             setCornersDotGradient={setCornersDotGradient}
+          />
+        </AccordionDetails>
+        <AccordionDetails></AccordionDetails>
+      </Accordion>
+      <Accordion expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
+        <AccordionSummary aria-controls='panel4d-content' id='panel4d-header'>
+          <Typography>Backgorund Options</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <QrCodeBackgroundOptions
+            backgroundColor={backgroundColor}
+            backgroundGradient={backgroundGradient}
+            setBackgroundColor={setBackgroundColor}
+            setBackgroundGradient={setBackgroundGradient}
           />
         </AccordionDetails>
         <AccordionDetails></AccordionDetails>

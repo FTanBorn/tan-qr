@@ -41,6 +41,8 @@ interface QRStyleOptions {
   cornersDotColor: string
   cornersDotType: CornerDotType
   cornersDotGradient: GradientConfig | null
+  backgroundColor: string
+  backgroundGradient: GradientConfig | null
 }
 
 export interface QRFormSubmitData {

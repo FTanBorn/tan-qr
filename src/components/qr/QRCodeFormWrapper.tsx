@@ -39,6 +39,10 @@ export default function QRCodeFormWrapper({
   const [cornersDotType, setCornersDotType] = useState<CornerDotType>('square')
   const [cornersDotGradient, setCornersDotGradient] = useState<GradientConfig | null>(null)
 
+  // Background Options State
+  const [backgroundColor, setBackgroundColor] = useState<string>('#fff')
+  const [backgroundGradient, setBackgroundGradient] = useState<GradientConfig | null>(null)
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     onSubmit({
@@ -52,7 +56,9 @@ export default function QRCodeFormWrapper({
         cornersSquareGradient,
         cornersDotColor,
         cornersDotType,
-        cornersDotGradient
+        cornersDotGradient,
+        backgroundColor,
+        backgroundGradient
       }
     })
   }
@@ -86,6 +92,11 @@ export default function QRCodeFormWrapper({
                 setCornersDotType={setCornersDotType}
                 cornersDotGradient={cornersDotGradient}
                 setCornersDotGradient={setCornersDotGradient}
+                // Background Type
+                backgroundColor={backgroundColor}
+                setBackgroundColor={setBackgroundColor}
+                backgroundGradient={backgroundGradient}
+                setBackgroundGradient={setBackgroundGradient}
               />
             )}
           </div>
@@ -107,7 +118,6 @@ export default function QRCodeFormWrapper({
             {showQR && data ? (
               <QrCodeGenerator
                 data={data}
-                backgroundColor={'#fff'}
                 // Dot Options
                 dotType={dotType}
                 dotColor={dotColor}
@@ -120,6 +130,9 @@ export default function QRCodeFormWrapper({
                 cornersDotColor={cornersDotColor}
                 cornersDotType={cornersDotType}
                 cornersDotGradient={cornersDotGradient}
+                // Background Options
+                backgroundColor={backgroundColor}
+                backgroundGradient={backgroundGradient}
               />
             ) : (
               'QR Code'
