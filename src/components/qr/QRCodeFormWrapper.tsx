@@ -1,6 +1,6 @@
 // QRCodeFormWrapper.tsx
 import { ReactNode, useState } from 'react'
-import { Box, Grid } from '@mui/material'
+import { Box, Grid, useTheme } from '@mui/material'
 import QrCodeAccordion from './customized/QrCodeAccordion'
 import QrCodeGenerator from './QrCodeGenerator'
 import { DotType, CornerSquareType, CornerDotType } from 'qr-code-styling'
@@ -24,6 +24,8 @@ export default function QRCodeFormWrapper({
   onSubmit,
   customStyles
 }: QRCodeFormWrapperProps) {
+  const theme = useTheme()
+
   // Dot Options State
   const [dotColor, setDotColor] = useState<string>('#000')
   const [dotType, setDotType] = useState<DotType>('rounded')
@@ -74,12 +76,15 @@ export default function QRCodeFormWrapper({
   }
 
   return (
-    <Box component='form' onSubmit={handleSubmit} noValidate style={customStyles?.formContainer}>
-      <Grid container justifyContent={'space-between'}>
-        <Grid item xs={12} md={7}>
-          <div>{formContent}</div>
-          <div>
-            {showQR && data && (
+    <Box component='form' onSubmit={handleSubmit} noValidate>
+      <Grid container spacing={4}>
+        <Grid item xs={12} md={8}>
+          {/* Form İçeriği */}
+          <Box>{formContent}</Box>
+
+          {/* QR Kod Ayarları */}
+          {showQR && data && (
+            <Box sx={{ backgroundColor: 'background.paper', borderRadius: 1, mt: 2 }}>
               <QrCodeAccordion
                 // Dot Type
                 dotColor={dotColor}
@@ -116,22 +121,24 @@ export default function QRCodeFormWrapper({
                 setImageMargin={setImageMargin}
                 setImageSize={setImageSize}
                 setHideBackgroundDots={setHideBackgroundDots}
-                
               />
-            )}
-          </div>
+            </Box>
+          )}
         </Grid>
-        <Grid item xs={12} md={5} justifyContent={'center'} alignItems={'center'} display={'flex'}>
+
+        {/* QR Kod Önizleme */}
+        <Grid item xs={12} md={4} display='flex' justifyContent='center' alignItems='center'>
           <Box
             sx={{
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              p: 6,
               height: '350px',
               width: '350px',
-              border: '4px dashed grey',
-              borderRadius: 3,
+              border: '3px dashed',
+              borderColor: 'divider',
+              borderRadius: 2,
+              backgroundColor: theme.palette.grey[50],
               ...customStyles?.qrContainer
             }}
           >
