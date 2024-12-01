@@ -5,26 +5,10 @@ import { Box, FormControl, FormControlLabel, Grid, Radio, RadioGroup, Slider, St
 import { MuiColorInput } from 'mui-color-input'
 import { qrSquareShapeOptions } from '@/data/dots'
 import { useCallback, useEffect, useState } from 'react'
-import { CornerSquareType } from 'qr-code-styling'
+import { CornerSquareType, GradientType } from 'qr-code-styling'
+import { ColorType, CornersSquareShapeOption, GradientConfig } from '../../types'
 
-interface ShapeOption {
-  id: number
-  type: 'dot' | 'square' | 'extra-rounded'
-  label: string
-}
-
-type GradientType = 'linear' | 'radial'
-
-interface GradientConfig {
-  type: GradientType
-  rotation: number
-  colorStops: Array<{
-    offset: number
-    color: string
-  }>
-}
-
-const DotShape = ({ type }: { type: ShapeOption['type'] }) => {
+const DotShape = ({ type }: { type: CornersSquareShapeOption['type'] }) => {
   const getShapeStyles = () => {
     const baseStyles = {
       width: 24,
@@ -61,7 +45,7 @@ export default function QrCodeCornersSquareOptions(props: CustomizeProps) {
   const { cornerSquareColor, cornersSquareType } = props
   const { setCornerSquareColor, setCornersSquareGradient, setCornersSquareType } = props
 
-  const [colorType, setColorType] = useState<'single' | 'gradient'>('single')
+  const [colorType, setColorType] = useState<ColorType>('single')
   const [gradientType, setGradientType] = useState<GradientType>('linear')
   const [gradientColorOne, setGradientColorOne] = useState('#000000')
   const [gradientColorTwo, setGradientColorTwo] = useState('#4B0082')
@@ -80,7 +64,7 @@ export default function QrCodeCornersSquareOptions(props: CustomizeProps) {
   }, [])
 
   const handleChangeColorType = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value as 'single' | 'gradient'
+    const value = event.target.value as ColorType
     setColorType(value)
   }
 

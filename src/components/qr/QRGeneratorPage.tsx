@@ -6,16 +6,13 @@ import { Container, Paper, Box, Tabs, Tab, Grid } from '@mui/material'
 import { Language, TextFields, Email, Phone, Wifi, LocationOn } from '@mui/icons-material'
 import TabPanel from './TabPanel'
 import URLForm from './forms/URLForms'
+import WifiForm from './forms/WifiForm'
 
 export default function QRGeneratorPage() {
   const [tabValue, setTabValue] = useState(0)
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue)
-  }
-
-  const handleGenerate = () => {
-    console.log('Generated QR data:')
   }
 
   return (
@@ -42,7 +39,10 @@ export default function QRGeneratorPage() {
 
           <Grid item xs={12} md={11}>
             <TabPanel value={tabValue} index={0}>
-              <URLForm onGenerate={handleGenerate} />
+              <URLForm maxUrlLength={1000} />
+            </TabPanel>
+            <TabPanel value={tabValue} index={4}>
+              <WifiForm />
             </TabPanel>
           </Grid>
         </Grid>

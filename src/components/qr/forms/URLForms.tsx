@@ -1,133 +1,168 @@
-// src/components/qr/forms/URLForm.tsx
+// URLForm.tsx
+import { useState, useCallback } from 'react'
+import { TextField, Button, Stack, Alert, InputAdornment } from '@mui/material'
+import { QrCode2, Link as LinkIcon } from '@mui/icons-material'
+import QRCodeFormWrapper from '../QRCodeFormWrapper'
+import { GradientConfig } from '../types'
+import { CornerSquareType, DotType } from 'qr-code-styling'
 
-import { useState } from 'react'
-import { Box, TextField, Button, Stack, Grid } from '@mui/material'
-import { QrCode2 } from '@mui/icons-material'
-import QrCodeGenerator from '../QrCodeGenerator'
-import QrCodeAccordion from '../customized/QrCodeAccordion'
-
-// DotType tipini tanımlayalım veya import edelim
-type DotType = 'dots' | 'rounded' | 'classy' | 'classy-rounded' | 'square' | 'extra-rounded'
-type CornersSquareType = 'dot' | 'square' | 'extra-rounded'
-
-// GradientConfig interface'ini tanımlayalım
-interface GradientConfig {
-  type: 'linear' | 'radial'
-  rotation: number
-  colorStops: Array<{
-    offset: number
-    color: string
-  }>
+export interface QRStyleOptions {
+  dotColor: string
+  dotShape: string
+  dotType: DotType
+  cornersSquareType: CornerSquareType
+  cornerSquareColor: string
+  cornersDotColor: string
+  dotGradient: GradientConfig | null
+  cornersSquareGradient: GradientConfig | null
 }
 
-// Form props interface'ini tanımlayalım
-interface FormProps {
-  onGenerate?: (url: string) => void
+export interface QRFormSubmitData {
+  data: string
+  qrStyles: QRStyleOptions
 }
 
-export default function URLForm({ onGenerate }: FormProps) {
-  const [urlData, setUrlData] = useState<string>('')
-  const [dotShape, setDotShape] = useState<string>('')
-  const [dotColor, setDotColor] = useState<string>('#000')
-  const [dotType, setDotType] = useState<DotType>('rounded')
-  const [cornersSquareType, setCornersSquareType] = useState<CornersSquareType>('square')
-  const [cornerSquareColor, setCornerSquareColor] = useState<string>('#000')
-  const [cornersDotColor, setCornersDotColor] = useState<string>('')
-  const [dotGradient, setDotGradient] = useState<GradientConfig | null>(null)
-  const [cornersSquareGradient, setCornersSquareGradient] = useState<GradientConfig | null>(null)
+interface URLFormProps {
+  onGenerate?: (data: QRFormSubmitData) => void
+  defaultUrl?: string
+  maxUrlLength?: number
+}
+
+export default function URLForm({ onGenerate, defaultUrl = '', maxUrlLength = 2048 }: URLFormProps) {
+  const [urlData, setUrlData] = useState(defaultUrl)
   const [showQR, setShowQR] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (urlData) {
-      setShowQR(true)
-      onGenerate?.(urlData)
+  // URL'yi düzenleyen fonksiyon
+  const formatUrl = (url: string): string => {
+    const trimmedUrl = url.trim()
+    if (!trimmedUrl) return ''
+
+    if (trimmedUrl.match(/^[a-zA-Z]+:\/\//)) return trimmedUrl
+
+    const securePortPattern = /:443$/
+    if (trimmedUrl.match(securePortPattern)) {
+      return `https://${trimmedUrl}`
+    }
+
+    return `http://${trimmedUrl}`
+  }
+
+  const validateUrl = useCallback((url: string): boolean => {
+    if (!url.trim()) return false
+
+    try {
+      new URL(formatUrl(url))
+      return true
+    } catch {
+      return false
+    }
+  }, [])
+
+  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newUrl = e.target.value
+    setUrlData(newUrl)
+    setError(null)
+
+    if (newUrl.length > maxUrlLength) {
+      setError(`URL ${maxUrlLength} karakterden uzun olamaz`)
+      return
     }
   }
 
+  const handleSubmit = (formData: QRFormSubmitData) => {
+    if (!urlData.trim()) {
+      setError('URL boş olamaz')
+      return
+    }
+
+    if (!validateUrl(urlData)) {
+      setError('Geçerli bir URL giriniz (örn: example.com)')
+      return
+    }
+
+    const formattedUrl = formatUrl(urlData)
+    const updatedFormData = {
+      ...formData,
+      data: formattedUrl
+    }
+
+    setError(null)
+    console.log('Form submitted:', updatedFormData)
+    onGenerate?.(updatedFormData)
+  }
+
+  const handleShowQR = () => {
+    if (!urlData.trim()) {
+      setError('URL boş olamaz')
+      return
+    }
+
+    if (!validateUrl(urlData)) {
+      setError('Geçerli bir URL giriniz (örn: example.com)')
+      return
+    }
+
+    setError(null)
+    setShowQR(true)
+  }
+
+  const formContent = (
+    <Stack spacing={3}>
+      {error && <Alert severity='error'>{error}</Alert>}
+
+      <TextField
+        fullWidth
+        label='Website URL'
+        placeholder='example.com'
+        variant='outlined'
+        value={urlData}
+        onChange={handleUrlChange}
+        required
+        error={!!error}
+        helperText={error}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position='start'>
+              <LinkIcon />
+            </InputAdornment>
+          )
+        }}
+      />
+
+      <Button
+        variant='contained'
+        size='large'
+        type='submit'
+        startIcon={<QrCode2 />}
+        onClick={handleShowQR}
+        disabled={!!error || !urlData.trim()}
+      >
+        QR Kod Oluştur
+      </Button>
+    </Stack>
+  )
+
   return (
-    <Box component='form' onSubmit={handleSubmit} noValidate>
-      <Grid container spacing={4}>
-        <Grid item xs={12} md={7}>
-          <Stack spacing={3}>
-            <TextField
-              fullWidth
-              label='Website URL'
-              placeholder='https://ornek.com'
-              variant='outlined'
-              value={urlData}
-              onChange={e => setUrlData(e.target.value)}
-              required
-              error={showQR && !urlData}
-              helperText={showQR && !urlData ? 'URL gereklidir' : ''}
-            />
-            <Button variant='contained' size='large' type='submit' startIcon={<QrCode2 />}>
-              QR Kod Oluştur
-            </Button>
-            {showQR && urlData ? (
-              <QrCodeAccordion
-                dotColor={dotColor}
-                cornerSquareColor={cornerSquareColor}
-                cornersDotColor={cornersDotColor}
-                dotShape={dotShape}
-                dotType={dotType}
-                dotGradient={dotGradient}
-                cornersSquareType={cornersSquareType}
-                cornersSquareGradient={cornersSquareGradient}
-                setDotColor={setDotColor}
-                setCornerSquareColor={setCornerSquareColor}
-                setCornersDotColor={setCornersDotColor}
-                setDotShape={setDotShape}
-                setDotType={setDotType}
-                setDotGradient={setDotGradient}
-                setCornersSquareType={setCornersSquareType}
-                setCornersSquareGradient={setCornersSquareGradient}
-              />
-            ) : null}
-          </Stack>
-        </Grid>
-        <Grid item xs={12} md={5} display={'flex'} justifyContent={'center'} alignItems={'center'}>
-          {showQR && urlData ? (
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                p: 3,
-                border: '4px dashed grey',
-                borderRadius: 3
-              }}
-            >
-              <QrCodeGenerator
-                data={urlData}
-                dotType={dotType}
-                cornersSquareType={cornersSquareType}
-                cornersSquareGradient={cornersSquareGradient}
-                dotGradient={dotGradient}
-                dotColor={dotColor}
-                backgroundColor={'#fff'}
-                cornerSquareColor={cornerSquareColor}
-                cornersDotColor={cornersDotColor}
-              />
-            </Box>
-          ) : (
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                p: 3,
-                height: '300px',
-                width: '300px',
-                border: '4px dashed grey',
-                borderRadius: 3
-              }}
-            >
-              QR Code
-            </Box>
-          )}
-        </Grid>
-      </Grid>
-    </Box>
+    <QRCodeFormWrapper
+      formContent={formContent}
+      data={formatUrl(urlData)}
+      showQR={showQR}
+      onSubmit={handleSubmit}
+      customStyles={{
+        formContainer: {
+          maxWidth: '1200px',
+          margin: '0 auto',
+          padding: '24px'
+        },
+        qrContainer: {
+          backgroundColor: '#f5f5f5',
+          minHeight: '300px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }
+      }}
+    />
   )
 }

@@ -1,30 +1,13 @@
-// src/components/qr/QRGenerator.tsx
 'use client'
 
 import { Box, FormControl, FormControlLabel, Grid, Radio, RadioGroup, Slider, Stack, Typography } from '@mui/material'
 import { MuiColorInput } from 'mui-color-input'
 import { qrShapeOptions } from '@/data/dots'
 import { useCallback, useEffect, useState } from 'react'
-import { DotType } from 'qr-code-styling'
+import { DotType, GradientType } from 'qr-code-styling'
+import { ColorType, DotShapeOption, GradientConfig } from '../../types'
 
-interface ShapeOption {
-  id: number
-  type: 'dots' | 'rounded' | 'classy' | 'classy-rounded' | 'square' | 'extra-rounded'
-  label: string
-}
-
-type GradientType = 'linear' | 'radial'
-
-interface GradientConfig {
-  type: GradientType
-  rotation: number
-  colorStops: Array<{
-    offset: number
-    color: string
-  }>
-}
-
-const DotShape = ({ type }: { type: ShapeOption['type'] }) => {
+const DotShape = ({ type }: { type: DotShapeOption['type'] }) => {
   const getShapeStyles = () => {
     const baseStyles = {
       width: 24,
@@ -67,7 +50,7 @@ export default function QrCodeDotOptions(props: CustomizeProps) {
   const { dotColor, dotType } = props
   const { setDotColor, setDotType, setDotGradient } = props
 
-  const [colorType, setColorType] = useState<'single' | 'gradient'>('single')
+  const [colorType, setColorType] = useState<ColorType>('single')
   const [gradientType, setGradientType] = useState<GradientType>('linear')
   const [gradientColorOne, setGradientColorOne] = useState('#000000')
   const [gradientColorTwo, setGradientColorTwo] = useState('#4B0082')
@@ -86,7 +69,7 @@ export default function QrCodeDotOptions(props: CustomizeProps) {
   }, [])
 
   const handleChangeColorType = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value as 'single' | 'gradient'
+    const value = event.target.value as ColorType
     setColorType(value)
   }
 

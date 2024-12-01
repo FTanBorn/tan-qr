@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography'
 import QrCodeDotOptions from './components/QrCodeDotOptions'
 import { DotType, CornerSquareType } from 'qr-code-styling'
 import QrCodeCornersSquareOptions from './components/QrCodeCornersSquareOptions '
+import { GradientConfig } from '../types'
 
 const Accordion = styled((props: AccordionProps) => <MuiAccordion disableGutters elevation={0} square {...props} />)(
   ({ theme }) => ({
@@ -41,15 +42,6 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   padding: theme.spacing(2),
   borderTop: '1px solid rgba(0, 0, 0, .125)'
 }))
-
-interface GradientConfig {
-  type: 'linear' | 'radial'
-  rotation: number
-  colorStops: Array<{
-    offset: number
-    color: string
-  }>
-}
 
 interface CustomizeProps {
   dotColor: string
@@ -89,7 +81,7 @@ export default function CustomizedAccordions(props: CustomizeProps) {
   }
 
   return (
-    <div>
+    <div style={{ marginTop: '25px' }}>
       <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <AccordionSummary aria-controls='panel1d-content' id='panel1d-header'>
           <Typography>Dot Options</Typography>
