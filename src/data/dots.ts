@@ -1,4 +1,4 @@
-import { DotType, CornerSquareType } from 'qr-code-styling'
+import { DotType, CornerSquareType, CornerDotType } from 'qr-code-styling'
 
 interface ShapeOption {
   id: number
@@ -10,6 +10,13 @@ interface ShapeOption {
 interface CornerSquareShapeOption {
   id: number
   type: CornerSquareType
+  label: string
+  icon?: string
+}
+
+interface CornerDotShapeOption {
+  id: number
+  type: CornerDotType
   label: string
   icon?: string
 }
@@ -62,5 +69,18 @@ export const qrSquareShapeOptions: CornerSquareShapeOption[] = [
     id: 3,
     type: 'extra-rounded',
     label: 'Extra Rounded'
+  }
+]
+
+export const qrDotShapeOptions: CornerDotShapeOption[] = [
+  {
+    id: 1,
+    type: 'dot',
+    label: 'Dots Style'
+  },
+  {
+    id: 2,
+    type: 'square',
+    label: 'Square'
   }
 ]

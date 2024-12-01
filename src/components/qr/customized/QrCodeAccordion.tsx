@@ -6,9 +6,10 @@ import MuiAccordionSummary, { AccordionSummaryProps, accordionSummaryClasses } f
 import MuiAccordionDetails from '@mui/material/AccordionDetails'
 import Typography from '@mui/material/Typography'
 import QrCodeDotOptions from './components/QrCodeDotOptions'
-import { DotType, CornerSquareType } from 'qr-code-styling'
+import { DotType, CornerSquareType, CornerDotType } from 'qr-code-styling'
 import QrCodeCornersSquareOptions from './components/QrCodeCornersSquareOptions '
 import { GradientConfig } from '../types'
+import QrCodeCornersDotOptions from './components/QrCodeCornersDotOptions'
 
 const Accordion = styled((props: AccordionProps) => <MuiAccordion disableGutters elevation={0} square {...props} />)(
   ({ theme }) => ({
@@ -44,34 +45,53 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }))
 
 interface CustomizeProps {
+  // Dot Options
   dotColor: string
-  cornerSquareColor: string
-  cornersDotColor: string
-  dotShape: string
   dotType: DotType
-  cornersSquareType: CornerSquareType
   dotGradient: GradientConfig | null
-  cornersSquareGradient: GradientConfig | null
-
   setDotColor: (val: string) => void
-  setCornerSquareColor: (val: string) => void
-  setCornersDotColor: (val: string) => void
-  setDotShape: (val: string) => void
   setDotType: (val: DotType) => void
-  setCornersSquareType: (val: CornerSquareType) => void
   setDotGradient: (gradient: GradientConfig | null) => void
+
+  // Corner Square Options
+  cornersSquareColor: string
+  cornersSquareType: CornerSquareType
+  cornersSquareGradient: GradientConfig | null
+  setCornerSquareColor: (val: string) => void
+  setCornersSquareType: (val: CornerSquareType) => void
   setCornersSquareGradient: (gradient: GradientConfig | null) => void
+
+  // Corner Dot Options
+  cornersDotColor: string
+  cornersDotType: CornerDotType
+  cornersDotGradient: GradientConfig | null
+  setCornersDotColor: (val: string) => void
+  setCornersDotType: (val: CornerDotType) => void
+  setCornersDotGradient: (gradient: GradientConfig | null) => void
 }
 
 export default function CustomizedAccordions(props: CustomizeProps) {
-  const { dotColor, dotType, dotGradient, cornerSquareColor, cornersSquareType, cornersSquareGradient } = props
+  // Dot Options Props
+  const { dotColor, dotType, dotGradient, setDotColor, setDotType, setDotGradient } = props
+
+  // Corner Square Options Props
   const {
-    setDotColor,
-    setDotType,
-    setDotGradient,
+    cornersSquareColor,
+    cornersSquareType,
+    cornersSquareGradient,
     setCornerSquareColor,
     setCornersSquareType,
     setCornersSquareGradient
+  } = props
+
+  // Corner Dot Options Props
+  const {
+    cornersDotColor,
+    cornersDotType,
+    cornersDotGradient,
+    setCornersDotColor,
+    setCornersDotType,
+    setCornersDotGradient
   } = props
 
   const [expanded, setExpanded] = React.useState<string | false>('')
@@ -104,11 +124,27 @@ export default function CustomizedAccordions(props: CustomizeProps) {
         <AccordionDetails>
           <QrCodeCornersSquareOptions
             cornersSquareType={cornersSquareType}
-            cornerSquareColor={cornerSquareColor}
+            cornersSquareColor={cornersSquareColor}
             cornersSquareGradient={cornersSquareGradient}
             setCornersSquareType={setCornersSquareType}
             setCornerSquareColor={setCornerSquareColor}
             setCornersSquareGradient={setCornersSquareGradient}
+          />
+        </AccordionDetails>
+        <AccordionDetails></AccordionDetails>
+      </Accordion>
+      <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+        <AccordionSummary aria-controls='panel3d-content' id='panel3d-header'>
+          <Typography>Corners Square Options</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <QrCodeCornersDotOptions
+            cornersDotType={cornersDotType}
+            cornersDotColor={cornersDotColor}
+            cornersDotGradient={cornersDotGradient}
+            setCornersDotType={setCornersDotType}
+            setCornersDotColor={setCornersDotColor}
+            setCornersDotGradient={setCornersDotGradient}
           />
         </AccordionDetails>
         <AccordionDetails></AccordionDetails>

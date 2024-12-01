@@ -1,29 +1,25 @@
 import React, { useEffect, useRef } from 'react'
 import QRCodeStyling, { CornerSquareType, DotType } from 'qr-code-styling'
 import { CornerDotType } from 'qr-code-styling'
-
-interface Gradient {
-  type: 'linear' | 'radial'
-  rotation: number
-  colorStops: Array<{
-    offset: number
-    color: string
-  }>
-}
+import { GradientConfig } from './types'
 
 type QrCodeGeneratorProps = {
   backgroundColor?: string
   data: string
   width?: number
   height?: number
-  dotColor?: string
-  cornerSquareColor?: string
-  cornersDotColor?: string
+  // Dot Options
   dotType?: DotType
+  dotColor?: string
+  dotGradient?: GradientConfig | null
+  // Corners Square Options
   cornersSquareType?: CornerSquareType
+  cornersSquareColor?: string
+  cornersSquareGradient?: GradientConfig | null
+  // Corners Dot Options
+  cornersDotColor?: string
   cornersDotType?: CornerDotType
-  dotGradient?: Gradient | null
-  cornersSquareGradient?: Gradient | null
+  cornersDotGradient?: GradientConfig | null
 }
 
 const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({
@@ -31,14 +27,18 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({
   data,
   width = 300,
   height = 300,
-  dotColor = '#000000',
-  cornerSquareColor = '#000000',
-  cornersDotColor = '#000000',
+  // Dot Options
   dotType = 'rounded',
-  cornersDotType = 'dot',
-  cornersSquareType = 'dot',
+  dotColor = '#000000',
   dotGradient = undefined,
-  cornersSquareGradient = undefined
+  // Corners Square Options
+  cornersSquareType = 'dot',
+  cornersSquareColor = '#000000',
+  cornersSquareGradient = undefined,
+  // Corners Dot Options
+  cornersDotType = 'dot',
+  cornersDotColor = '#000000',
+  cornersDotGradient = undefined
 }) => {
   const qrCodeRef = useRef<HTMLDivElement>(null)
   const qrCodeInstance = useRef<QRCodeStyling>()
@@ -53,9 +53,9 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({
         color: dotColor,
         gradient: dotGradient || undefined
       },
-      cornersDotOptions: { color: cornersDotColor, type: cornersDotType },
+      cornersDotOptions: { color: cornersDotColor, type: cornersDotType, gradient: cornersDotGradient || undefined },
       cornersSquareOptions: {
-        color: cornerSquareColor,
+        color: cornersSquareColor,
         type: cornersSquareType,
         gradient: cornersSquareGradient || undefined
       },
@@ -70,15 +70,16 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({
     data,
     width,
     height,
-    dotColor,
     backgroundColor,
-    cornerSquareColor,
-    dotGradient,
-    cornersSquareType,
-    cornersDotColor,
+    dotColor,
     dotType,
+    dotGradient,
+    cornersSquareColor,
+    cornersSquareType,
+    cornersSquareGradient,
+    cornersDotColor,
     cornersDotType,
-    cornersSquareGradient
+    cornersDotGradient
   ])
 
   // QR kodu yenilemek için
@@ -91,9 +92,9 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({
           color: dotColor,
           gradient: dotGradient || undefined
         },
-        cornersDotOptions: { color: cornersDotColor, type: cornersDotType },
+        cornersDotOptions: { color: cornersDotColor, type: cornersDotType, gradient: cornersDotGradient || undefined },
         cornersSquareOptions: {
-          color: cornerSquareColor,
+          color: cornersSquareColor,
           type: cornersSquareType,
           gradient: cornersSquareGradient || undefined
         },
@@ -102,15 +103,16 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({
     }
   }, [
     data,
-    dotColor,
     backgroundColor,
-    cornerSquareColor,
-    cornersSquareType,
-    cornersDotColor,
-    cornersDotType,
+    dotColor,
     dotType,
     dotGradient,
-    cornersSquareGradient
+    cornersSquareColor,
+    cornersSquareType,
+    cornersSquareGradient,
+    cornersDotColor,
+    cornersDotType,
+    cornersDotGradient
   ])
 
   return <div ref={qrCodeRef} />

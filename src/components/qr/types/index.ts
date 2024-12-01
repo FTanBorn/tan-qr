@@ -24,3 +24,9 @@ export interface CornersSquareShapeOption {
   type: 'dot' | 'square' | 'extra-rounded'
   label: string
 }
+
+export interface CornersDotShapeOption {
+  id: number
+  type: 'dot' | 'square'
+  label: string
+}

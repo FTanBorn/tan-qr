@@ -3,12 +3,12 @@
 
 import { Box, FormControl, FormControlLabel, Grid, Radio, RadioGroup, Slider, Stack, Typography } from '@mui/material'
 import { MuiColorInput } from 'mui-color-input'
-import { qrSquareShapeOptions } from '@/data/dots'
+import { qrDotShapeOptions } from '@/data/dots'
 import { useCallback, useEffect, useState } from 'react'
-import { CornerSquareType, GradientType } from 'qr-code-styling'
-import { ColorType, CornersSquareShapeOption, GradientConfig } from '../../types'
+import { CornerDotType, GradientType } from 'qr-code-styling'
+import { ColorType, CornersDotShapeOption, GradientConfig } from '../../types'
 
-const DotShape = ({ type }: { type: CornersSquareShapeOption['type'] }) => {
+const DotShape = ({ type }: { type: CornersDotShapeOption['type'] }) => {
   const getShapeStyles = () => {
     const baseStyles = {
       width: 24,
@@ -21,8 +21,6 @@ const DotShape = ({ type }: { type: CornersSquareShapeOption['type'] }) => {
         return { ...baseStyles, borderRadius: '50%' }
       case 'square':
         return { ...baseStyles, borderRadius: 0 }
-      case 'extra-rounded':
-        return { ...baseStyles, borderRadius: 12 }
       default:
         return baseStyles
     }
@@ -32,18 +30,18 @@ const DotShape = ({ type }: { type: CornersSquareShapeOption['type'] }) => {
 }
 
 interface CustomizeProps {
-  cornersSquareColor: string
-  cornersSquareType: CornerSquareType
-  cornersSquareGradient: GradientConfig | null
+  cornersDotColor: string
+  cornersDotType: CornerDotType
+  cornersDotGradient: GradientConfig | null
 
-  setCornerSquareColor: (color: string) => void
-  setCornersSquareType: (val: CornerSquareType) => void
-  setCornersSquareGradient: (gradient: GradientConfig | null) => void
+  setCornersDotColor: (color: string) => void
+  setCornersDotType: (val: CornerDotType) => void
+  setCornersDotGradient: (gradient: GradientConfig | null) => void
 }
 
-export default function QrCodeCornersSquareOptions(props: CustomizeProps) {
-  const { cornersSquareColor, cornersSquareType } = props
-  const { setCornerSquareColor, setCornersSquareGradient, setCornersSquareType } = props
+export default function QrCodeCornersDotOptions(props: CustomizeProps) {
+  const { cornersDotColor, cornersDotType } = props
+  const { setCornersDotColor, setCornersDotGradient, setCornersDotType } = props
 
   const [colorType, setColorType] = useState<ColorType>('single')
   const [gradientType, setGradientType] = useState<GradientType>('linear')
@@ -52,7 +50,7 @@ export default function QrCodeCornersSquareOptions(props: CustomizeProps) {
   const [gradientRotation, setGradientRotation] = useState(0)
 
   const handleChangeDotColor = (color: string) => {
-    setCornerSquareColor(color)
+    setCornersDotColor(color)
   }
 
   const handleChangeGradientColorOne = useCallback((color: string) => {
@@ -87,27 +85,27 @@ export default function QrCodeCornersSquareOptions(props: CustomizeProps) {
           { offset: 1, color: gradientColorTwo }
         ]
       }
-      setCornersSquareGradient(gradientConfig)
+      setCornersDotGradient(gradientConfig)
     } else {
-      setCornersSquareGradient(null)
+      setCornersDotGradient(null)
     }
-  }, [colorType, gradientType, gradientColorOne, gradientColorTwo, gradientRotation, setCornersSquareGradient])
+  }, [colorType, gradientType, gradientColorOne, gradientColorTwo, gradientRotation, setCornersDotGradient])
 
   return (
     <Grid container p={1} spacing={2}>
       <Stack direction={'row'} spacing={0.5} mt={1} alignItems={'center'}>
         <Typography>Dot Options:</Typography>
-        {qrSquareShapeOptions.map(shape => (
+        {qrDotShapeOptions.map(shape => (
           <Box
             key={shape.id}
-            onClick={() => setCornersSquareType(shape.type)}
+            onClick={() => setCornersDotType(shape.type)}
             sx={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               padding: 1,
               mr: 2,
-              border: cornersSquareType === shape.type ? '1px solid #000' : '1px solid #e0e0e0',
+              border: cornersDotType === shape.type ? '1px solid #000' : '1px solid #e0e0e0',
               borderRadius: 1,
               '&:hover': {
                 backgroundColor: '#f5f5f5',
@@ -144,7 +142,7 @@ export default function QrCodeCornersSquareOptions(props: CustomizeProps) {
             sx={{ width: '200 px' }}
             size='small'
             placeholder='Color'
-            value={cornersSquareColor}
+            value={cornersDotColor}
             onChange={handleChangeDotColor}
           />
         </Stack>

@@ -21,7 +21,7 @@ interface QRStyleOptions {
   dotShape: string
   dotType: DotType
   cornersSquareType: CornerSquareType
-  cornerSquareColor: string
+  cornersSquareColor: string
   cornersDotColor: string
   dotGradient: GradientConfig | null
   cornersSquareGradient: GradientConfig | null
