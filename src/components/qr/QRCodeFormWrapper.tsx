@@ -43,6 +43,12 @@ export default function QRCodeFormWrapper({
   const [backgroundColor, setBackgroundColor] = useState<string>('#fff')
   const [backgroundGradient, setBackgroundGradient] = useState<GradientConfig | null>(null)
 
+  // Image Options State
+  const [imageSource, setImageSource] = useState<string>('')
+  const [imageMargin, setImageMargin] = useState<number>(5)
+  const [imageSize, setImageSize] = useState<number>(0.4)
+  const [hideBackgroundDots, setHideBackgroundDots] = useState<boolean>(false)
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     onSubmit({
@@ -58,7 +64,11 @@ export default function QRCodeFormWrapper({
         cornersDotType,
         cornersDotGradient,
         backgroundColor,
-        backgroundGradient
+        backgroundGradient,
+        imageSource,
+        imageMargin,
+        imageSize,
+        hideBackgroundDots
       }
     })
   }
@@ -97,6 +107,16 @@ export default function QRCodeFormWrapper({
                 setBackgroundColor={setBackgroundColor}
                 backgroundGradient={backgroundGradient}
                 setBackgroundGradient={setBackgroundGradient}
+                // Image Type
+                imageSource={imageSource}
+                imageMargin={imageMargin}
+                imageSize={imageSize}
+                hideBackgroundDots={hideBackgroundDots}
+                setImageSource={setImageSource}
+                setImageMargin={setImageMargin}
+                setImageSize={setImageSize}
+                setHideBackgroundDots={setHideBackgroundDots}
+                
               />
             )}
           </div>
@@ -133,6 +153,11 @@ export default function QRCodeFormWrapper({
                 // Background Options
                 backgroundColor={backgroundColor}
                 backgroundGradient={backgroundGradient}
+                // Image Options
+                imageSource={imageSource}
+                imageMargin={imageMargin}
+                imageSize={imageSize}
+                hideBackgroundDots={hideBackgroundDots}
               />
             ) : (
               'QR Code'

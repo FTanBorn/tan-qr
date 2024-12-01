@@ -11,6 +11,7 @@ import QrCodeCornersSquareOptions from './components/QrCodeCornersSquareOptions 
 import { GradientConfig } from '../types'
 import QrCodeCornersDotOptions from './components/QrCodeCornersDotOptions'
 import QrCodeBackgroundOptions from './components/QrCodeBackgroundOptions'
+import QrCodeImageOptions from './components/QrCodeImageOptions'
 
 const Accordion = styled((props: AccordionProps) => <MuiAccordion disableGutters elevation={0} square {...props} />)(
   ({ theme }) => ({
@@ -70,11 +71,21 @@ interface CustomizeProps {
   setCornersDotType: (val: CornerDotType) => void
   setCornersDotGradient: (gradient: GradientConfig | null) => void
 
-  // Backgroun Options
+  // Background Options
   backgroundColor: string
   backgroundGradient: GradientConfig | null
   setBackgroundColor: (val: string) => void
   setBackgroundGradient: (gradient: GradientConfig | null) => void
+
+  // Image Options
+  imageSource: string
+  imageMargin: number
+  imageSize: number
+  hideBackgroundDots: boolean
+  setImageSource: (source: string) => void
+  setImageMargin: (margin: number) => void
+  setImageSize: (size: number) => void
+  setHideBackgroundDots: (hide: boolean) => void
 }
 
 export default function CustomizedAccordions(props: CustomizeProps) {
@@ -103,6 +114,18 @@ export default function CustomizedAccordions(props: CustomizeProps) {
 
   // Background Options Props
   const { backgroundColor, backgroundGradient, setBackgroundColor, setBackgroundGradient } = props
+
+  // Image Options Props
+  const {
+    imageSource,
+    imageMargin,
+    imageSize,
+    hideBackgroundDots,
+    setImageSource,
+    setImageMargin,
+    setImageSize,
+    setHideBackgroundDots
+  } = props
 
   const [expanded, setExpanded] = React.useState<string | false>('')
 
@@ -169,6 +192,24 @@ export default function CustomizedAccordions(props: CustomizeProps) {
             backgroundGradient={backgroundGradient}
             setBackgroundColor={setBackgroundColor}
             setBackgroundGradient={setBackgroundGradient}
+          />
+        </AccordionDetails>
+        <AccordionDetails></AccordionDetails>
+      </Accordion>
+      <Accordion expanded={expanded === 'panel5'} onChange={handleChange('panel5')}>
+        <AccordionSummary aria-controls='panel5d-content' id='panel5d-header'>
+          <Typography>Image Options</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <QrCodeImageOptions
+            imageSource={imageSource}
+            imageMargin={imageMargin}
+            imageSize={imageSize}
+            hideBackgroundDots={hideBackgroundDots}
+            setImageSource={setImageSource}
+            setImageMargin={setImageMargin}
+            setImageSize={setImageSize}
+            setHideBackgroundDots={setHideBackgroundDots}
           />
         </AccordionDetails>
         <AccordionDetails></AccordionDetails>

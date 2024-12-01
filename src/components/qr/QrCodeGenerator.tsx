@@ -22,6 +22,11 @@ type QrCodeGeneratorProps = {
   // Background Options
   backgroundColor?: string
   backgroundGradient?: GradientConfig | null
+  // Image Options
+  imageSource: string
+  imageMargin: number
+  imageSize: number
+  hideBackgroundDots: boolean
 }
 
 const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({
@@ -42,7 +47,12 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({
   cornersDotGradient = undefined,
   // Backgorund Options
   backgroundColor = '#ffffff',
-  backgroundGradient = undefined
+  backgroundGradient = undefined,
+  // Image Options
+  imageSource = '',
+  imageMargin = 5,
+  imageSize = 0.4,
+  hideBackgroundDots = false
 }) => {
   const qrCodeRef = useRef<HTMLDivElement>(null)
   const qrCodeInstance = useRef<QRCodeStyling>()
@@ -52,6 +62,7 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({
       width,
       height,
       data,
+      image: imageSource,
       dotsOptions: {
         type: dotType,
         color: dotColor,
@@ -66,6 +77,11 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({
       backgroundOptions: {
         color: backgroundColor,
         gradient: backgroundGradient || undefined
+      },
+      imageOptions: {
+        margin: imageMargin,
+        imageSize: imageSize,
+        hideBackgroundDots: hideBackgroundDots
       }
     })
     if (qrCodeRef.current) {
@@ -85,7 +101,11 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({
     cornersDotType,
     cornersDotGradient,
     backgroundColor,
-    backgroundGradient
+    backgroundGradient,
+    imageSource,
+    imageMargin,
+    imageSize,
+    hideBackgroundDots
   ])
 
   // QR kodu yenilemek için
@@ -93,6 +113,7 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({
     if (qrCodeInstance.current) {
       qrCodeInstance.current.update({
         data,
+        image: imageSource,
         dotsOptions: {
           type: dotType,
           color: dotColor,
@@ -104,7 +125,12 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({
           type: cornersSquareType,
           gradient: cornersSquareGradient || undefined
         },
-        backgroundOptions: { color: backgroundColor, gradient: backgroundGradient || undefined }
+        backgroundOptions: { color: backgroundColor, gradient: backgroundGradient || undefined },
+        imageOptions: {
+          margin: imageMargin,
+          imageSize: imageSize,
+          hideBackgroundDots: hideBackgroundDots
+        }
       })
     }
   }, [
@@ -119,7 +145,11 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({
     cornersDotType,
     cornersDotGradient,
     backgroundColor,
-    backgroundGradient
+    backgroundGradient,
+    imageSource,
+    imageMargin,
+    imageSize,
+    hideBackgroundDots
   ])
 
   return <div ref={qrCodeRef} />
