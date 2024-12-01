@@ -6,7 +6,8 @@ import MuiAccordionSummary, { AccordionSummaryProps, accordionSummaryClasses } f
 import MuiAccordionDetails from '@mui/material/AccordionDetails'
 import Typography from '@mui/material/Typography'
 import QrCodeDotOptions from './components/QrCodeDotOptions'
-import { DotType } from 'qr-code-styling'
+import { DotType, CornerSquareType } from 'qr-code-styling'
+import QrCodeCornersSquareOptions from './components/QrCodeCornersSquareOptions '
 
 const Accordion = styled((props: AccordionProps) => <MuiAccordion disableGutters elevation={0} square {...props} />)(
   ({ theme }) => ({
@@ -56,19 +57,30 @@ interface CustomizeProps {
   cornersDotColor: string
   dotShape: string
   dotType: DotType
+  cornersSquareType: CornerSquareType
   dotGradient: GradientConfig | null
+  cornersSquareGradient: GradientConfig | null
 
   setDotColor: (val: string) => void
   setCornerSquareColor: (val: string) => void
   setCornersDotColor: (val: string) => void
   setDotShape: (val: string) => void
-  setDotType: (val: DotType) => void // DotType olarak güncelledik
+  setDotType: (val: DotType) => void
+  setCornersSquareType: (val: CornerSquareType) => void
   setDotGradient: (gradient: GradientConfig | null) => void
+  setCornersSquareGradient: (gradient: GradientConfig | null) => void
 }
 
 export default function CustomizedAccordions(props: CustomizeProps) {
-  const { dotColor, dotType, dotGradient } = props
-  const { setDotColor, setDotType, setDotGradient } = props
+  const { dotColor, dotType, dotGradient, cornerSquareColor, cornersSquareType, cornersSquareGradient } = props
+  const {
+    setDotColor,
+    setDotType,
+    setDotGradient,
+    setCornerSquareColor,
+    setCornersSquareType,
+    setCornersSquareGradient
+  } = props
 
   const [expanded, setExpanded] = React.useState<string | false>('')
 
@@ -80,7 +92,7 @@ export default function CustomizedAccordions(props: CustomizeProps) {
     <div>
       <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <AccordionSummary aria-controls='panel1d-content' id='panel1d-header'>
-          <Typography>Colors</Typography>
+          <Typography>Dot Options</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <QrCodeDotOptions
@@ -95,8 +107,18 @@ export default function CustomizedAccordions(props: CustomizeProps) {
       </Accordion>
       <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
         <AccordionSummary aria-controls='panel2d-content' id='panel2d-header'>
-          <Typography>Shapes</Typography>
+          <Typography>Corners Square Options</Typography>
         </AccordionSummary>
+        <AccordionDetails>
+          <QrCodeCornersSquareOptions
+            cornersSquareType={cornersSquareType}
+            cornerSquareColor={cornerSquareColor}
+            cornersSquareGradient={cornersSquareGradient}
+            setCornersSquareType={setCornersSquareType}
+            setCornerSquareColor={setCornerSquareColor}
+            setCornersSquareGradient={setCornersSquareGradient}
+          />
+        </AccordionDetails>
         <AccordionDetails></AccordionDetails>
       </Accordion>
     </div>

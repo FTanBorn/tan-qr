@@ -8,6 +8,7 @@ import QrCodeAccordion from '../customized/QrCodeAccordion'
 
 // DotType tipini tanımlayalım veya import edelim
 type DotType = 'dots' | 'rounded' | 'classy' | 'classy-rounded' | 'square' | 'extra-rounded'
+type CornersSquareType = 'dot' | 'square' | 'extra-rounded'
 
 // GradientConfig interface'ini tanımlayalım
 interface GradientConfig {
@@ -27,11 +28,13 @@ interface FormProps {
 export default function URLForm({ onGenerate }: FormProps) {
   const [urlData, setUrlData] = useState<string>('')
   const [dotShape, setDotShape] = useState<string>('')
-  const [dotColor, setDotColor] = useState<string>('')
+  const [dotColor, setDotColor] = useState<string>('#000')
   const [dotType, setDotType] = useState<DotType>('rounded')
-  const [cornerSquareColor, setCornerSquareColor] = useState<string>('')
+  const [cornersSquareType, setCornersSquareType] = useState<CornersSquareType>('square')
+  const [cornerSquareColor, setCornerSquareColor] = useState<string>('#000')
   const [cornersDotColor, setCornersDotColor] = useState<string>('')
   const [dotGradient, setDotGradient] = useState<GradientConfig | null>(null)
+  const [cornersSquareGradient, setCornersSquareGradient] = useState<GradientConfig | null>(null)
   const [showQR, setShowQR] = useState(false)
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -69,12 +72,16 @@ export default function URLForm({ onGenerate }: FormProps) {
                 dotShape={dotShape}
                 dotType={dotType}
                 dotGradient={dotGradient}
+                cornersSquareType={cornersSquareType}
+                cornersSquareGradient={cornersSquareGradient}
                 setDotColor={setDotColor}
                 setCornerSquareColor={setCornerSquareColor}
                 setCornersDotColor={setCornersDotColor}
                 setDotShape={setDotShape}
                 setDotType={setDotType}
                 setDotGradient={setDotGradient}
+                setCornersSquareType={setCornersSquareType}
+                setCornersSquareGradient={setCornersSquareGradient}
               />
             ) : null}
           </Stack>
@@ -94,6 +101,8 @@ export default function URLForm({ onGenerate }: FormProps) {
               <QrCodeGenerator
                 data={urlData}
                 dotType={dotType}
+                cornersSquareType={cornersSquareType}
+                cornersSquareGradient={cornersSquareGradient}
                 dotGradient={dotGradient}
                 dotColor={dotColor}
                 backgroundColor={'#fff'}
