@@ -13,24 +13,7 @@ import {
 } from '@mui/material'
 import { Wifi, QrCode2, Visibility, VisibilityOff } from '@mui/icons-material'
 import QRCodeFormWrapper from '../QRCodeFormWrapper'
-import { EncryptionType, GradientConfig } from '../types'
-import { CornerSquareType, DotType } from 'qr-code-styling'
-
-interface QRStyleOptions {
-  dotColor: string
-  dotShape: string
-  dotType: DotType
-  cornersSquareType: CornerSquareType
-  cornersSquareColor: string
-  cornersDotColor: string
-  dotGradient: GradientConfig | null
-  cornersSquareGradient: GradientConfig | null
-}
-
-interface QRFormSubmitData {
-  data: string
-  qrStyles: QRStyleOptions
-}
+import { EncryptionType, QRFormSubmitData } from '../types'
 
 interface WifiFormData {
   ssid: string

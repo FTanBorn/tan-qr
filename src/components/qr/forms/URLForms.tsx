@@ -3,24 +3,7 @@ import { useState, useCallback } from 'react'
 import { TextField, Button, Stack, Alert, InputAdornment } from '@mui/material'
 import { QrCode2, Link as LinkIcon } from '@mui/icons-material'
 import QRCodeFormWrapper from '../QRCodeFormWrapper'
-import { GradientConfig } from '../types'
-import { CornerSquareType, DotType } from 'qr-code-styling'
-
-export interface QRStyleOptions {
-  dotColor: string
-  dotShape: string
-  dotType: DotType
-  cornersSquareType: CornerSquareType
-  cornersSquareColor: string
-  cornersDotColor: string
-  dotGradient: GradientConfig | null
-  cornersSquareGradient: GradientConfig | null
-}
-
-export interface QRFormSubmitData {
-  data: string
-  qrStyles: QRStyleOptions
-}
+import { QRFormSubmitData } from '../types'
 
 interface URLFormProps {
   onGenerate?: (data: QRFormSubmitData) => void

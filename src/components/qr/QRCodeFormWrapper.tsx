@@ -4,26 +4,7 @@ import { Box, Grid } from '@mui/material'
 import QrCodeAccordion from './customized/QrCodeAccordion'
 import QrCodeGenerator from './QrCodeGenerator'
 import { DotType, CornerSquareType, CornerDotType } from 'qr-code-styling'
-import { GradientConfig } from './types'
-
-interface QRStyleOptions {
-  dotColor: string
-  dotType: DotType
-  dotGradient: GradientConfig | null
-
-  cornersSquareColor: string
-  cornersSquareType: CornerSquareType
-  cornersSquareGradient: GradientConfig | null
-
-  cornersDotColor: string
-  cornersDotType: CornerDotType
-  cornersDotGradient: GradientConfig | null
-}
-
-interface QRFormSubmitData {
-  data: string
-  qrStyles: QRStyleOptions
-}
+import { GradientConfig, QRFormSubmitData } from './types'
 
 interface QRCodeFormWrapperProps {
   formContent: ReactNode

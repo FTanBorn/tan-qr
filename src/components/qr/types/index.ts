@@ -1,4 +1,4 @@
-import { GradientType } from 'qr-code-styling/lib/types'
+import { CornerDotType, CornerSquareType, DotType, GradientType } from 'qr-code-styling/lib/types'
 
 export type EncryptionType = 'WPA' | 'WEP' | 'nopass'
 
@@ -29,4 +29,21 @@ export interface CornersDotShapeOption {
   id: number
   type: 'dot' | 'square'
   label: string
+}
+
+interface QRStyleOptions {
+  dotColor: string
+  dotType: DotType
+  dotGradient: GradientConfig | null
+  cornersSquareColor: string
+  cornersSquareType: CornerSquareType
+  cornersSquareGradient: GradientConfig | null
+  cornersDotColor: string
+  cornersDotType: CornerDotType
+  cornersDotGradient: GradientConfig | null
+}
+
+export interface QRFormSubmitData {
+  data: string
+  qrStyles: QRStyleOptions
 }
