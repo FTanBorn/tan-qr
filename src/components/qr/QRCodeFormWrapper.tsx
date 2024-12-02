@@ -79,10 +79,8 @@ export default function QRCodeFormWrapper({
     <Box component='form' onSubmit={handleSubmit} noValidate>
       <Grid container spacing={4}>
         <Grid item xs={12} md={8}>
-          {/* Form İçeriği */}
           <Box>{formContent}</Box>
 
-          {/* QR Kod Ayarları */}
           {showQR && data && (
             <Box sx={{ backgroundColor: 'background.paper', borderRadius: 1, mt: 2 }}>
               <QrCodeAccordion
@@ -126,7 +124,6 @@ export default function QRCodeFormWrapper({
           )}
         </Grid>
 
-        {/* QR Kod Önizleme */}
         <Grid item xs={12} md={4} display='flex' justifyContent='center' alignItems='center'>
           <Box
             sx={{

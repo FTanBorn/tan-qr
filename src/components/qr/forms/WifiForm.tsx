@@ -32,7 +32,6 @@ export default function WifiForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [showQR, setShowQR] = useState(false)
 
-  // WiFi QR kod formatını oluştur
   const generateWifiString = (data: WifiFormData): string => {
     const { ssid, password, encryption, hidden } = data
     return `WIFI:T:${encryption};S:${ssid};P:${password};H:${hidden};`
@@ -60,14 +59,14 @@ export default function WifiForm() {
     <Stack spacing={3}>
       <TextField
         fullWidth
-        label='Ağ Adı (SSID)'
-        placeholder='WiFi ağ adını girin'
+        label='Network Name (SSID)'
+        placeholder='Enter WiFi network name'
         variant='outlined'
         value={formData.ssid}
         onChange={handleChange('ssid')}
         required
         error={showQR && !formData.ssid}
-        helperText={showQR && !formData.ssid ? 'Ağ adı gereklidir' : ''}
+        helperText={showQR && !formData.ssid ? 'Network name is required' : ''}
         InputProps={{
           startAdornment: (
             <InputAdornment position='start'>
@@ -81,12 +80,12 @@ export default function WifiForm() {
         <InputLabel>Şifreleme Türü</InputLabel>
         <Select
           value={formData.encryption}
-          label='Şifreleme Türü'
+          label='Encryption Type'
           onChange={e => setFormData(prev => ({ ...prev, encryption: e.target.value as EncryptionType }))}
         >
           <MenuItem value='WPA'>WPA/WPA2</MenuItem>
           <MenuItem value='WEP'>WEP</MenuItem>
-          <MenuItem value='nopass'>Şifresiz</MenuItem>
+          <MenuItem value='nopass'>No password</MenuItem>
         </Select>
       </FormControl>
 
@@ -94,13 +93,13 @@ export default function WifiForm() {
         <TextField
           fullWidth
           type={showPassword ? 'text' : 'password'}
-          label='Şifre'
+          label='Password'
           variant='outlined'
           value={formData.password}
           onChange={handleChange('password')}
           required
           error={showQR && !formData.password}
-          helperText={showQR && !formData.password ? 'Şifre gereklidir' : ''}
+          helperText={showQR && !formData.password ? '' : 'Password required'}
           InputProps={{
             endAdornment: (
               <InputAdornment position='end'>
@@ -114,10 +113,10 @@ export default function WifiForm() {
       )}
 
       <FormControl fullWidth>
-        <InputLabel>Gizli Ağ</InputLabel>
+        <InputLabel>Secret Network</InputLabel>
         <Select
           value={formData.hidden ? 'true' : 'false'}
-          label='Gizli Ağ'
+          label='Secret Network'
           onChange={e =>
             setFormData(prev => ({
               ...prev,
@@ -125,8 +124,8 @@ export default function WifiForm() {
             }))
           }
         >
-          <MenuItem value='false'>Hayır</MenuItem>
-          <MenuItem value='true'>Evet</MenuItem>
+          <MenuItem value='false'>No</MenuItem>
+          <MenuItem value='true'>Yes</MenuItem>
         </Select>
       </FormControl>
 
@@ -138,7 +137,7 @@ export default function WifiForm() {
         onClick={() => setShowQR(true)}
         disabled={!formData.ssid || (isPasswordRequired && !formData.password)}
       >
-        WiFi QR Kodu Oluştur
+        Generate WiFi QR Code
       </Button>
     </Stack>
   )

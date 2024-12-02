@@ -16,7 +16,6 @@ export default function URLForm({ onGenerate, defaultUrl = '', maxUrlLength = 20
   const [showQR, setShowQR] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  // URL'yi düzenleyen fonksiyon
   const formatUrl = (url: string): string => {
     const trimmedUrl = url.trim()
     if (!trimmedUrl) return ''
@@ -48,19 +47,19 @@ export default function URLForm({ onGenerate, defaultUrl = '', maxUrlLength = 20
     setError(null)
 
     if (newUrl.length > maxUrlLength) {
-      setError(`URL ${maxUrlLength} karakterden uzun olamaz`)
+      setError(`URL cannot exceed ${maxUrlLength} characters`)
       return
     }
   }
 
   const handleSubmit = (formData: QRFormSubmitData) => {
     if (!urlData.trim()) {
-      setError('URL boş olamaz')
+      setError('URL cannot be empty')
       return
     }
 
     if (!validateUrl(urlData)) {
-      setError('Geçerli bir URL giriniz (örn: example.com)')
+      setError('Please enter a valid URL (eg: example.com)')
       return
     }
 
@@ -77,12 +76,12 @@ export default function URLForm({ onGenerate, defaultUrl = '', maxUrlLength = 20
 
   const handleShowQR = () => {
     if (!urlData.trim()) {
-      setError('URL boş olamaz')
+      setError('URL cannot be empty')
       return
     }
 
     if (!validateUrl(urlData)) {
-      setError('Geçerli bir URL giriniz (örn: example.com)')
+      setError('Please enter a valid URL (eg: example.com)')
       return
     }
 
@@ -121,7 +120,7 @@ export default function URLForm({ onGenerate, defaultUrl = '', maxUrlLength = 20
         onClick={handleShowQR}
         disabled={!!error || !urlData.trim()}
       >
-        QR Kod Oluştur
+        Create QR Code
       </Button>
     </Stack>
   )

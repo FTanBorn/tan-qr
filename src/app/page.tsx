@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <Box sx={{ my: 5 }}>
       <Typography variant='h3' component='h1' align='center' gutterBottom>
-        QR Kod Oluşturucu
+        QR Code Generator
       </Typography>
       <QRGeneratorPage />
     </Box>

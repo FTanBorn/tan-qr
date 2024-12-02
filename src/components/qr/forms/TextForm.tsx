@@ -85,7 +85,7 @@ export default function TextForm({ onGenerate, defaultText = '', maxLength = 500
         onClick={handleShowQR}
         disabled={!!error || !textData.trim()}
       >
-        QR Kod Oluştur
+        Create QR Code
       </Button>
     </Stack>
   )

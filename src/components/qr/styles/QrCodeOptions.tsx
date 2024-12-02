@@ -10,8 +10,8 @@ export const ShapeButton = styled(Box)(({ theme }) => ({
   borderRadius: theme.spacing(1),
   transition: 'all 0.2s ease-in-out',
   cursor: 'pointer',
-  width: 40, // Genişlik 40 piksel
-  height: 40, // Yükseklik 40 piksel
+  width: 40,
+  height: 40,
   '&:hover': {
     backgroundColor: theme.palette.action.hover
   },
@@ -23,13 +23,12 @@ export const ShapeButton = styled(Box)(({ theme }) => ({
 
 export const ShapePreview = styled(Box)({
   position: 'relative',
-  width: 24, // Genişlik 24 piksel
-  height: 24, // Yükseklik 24 piksel
+  width: 24,
+  height: 24,
   backgroundColor: '#000',
   transition: 'all 0.2s ease-in-out'
 })
 
-// Color Section Styles
 export const ColorSection = styled(Stack)(({ theme }) => ({
   marginTop: theme.spacing(2),
   gap: theme.spacing(2),

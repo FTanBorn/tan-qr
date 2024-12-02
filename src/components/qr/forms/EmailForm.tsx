@@ -150,7 +150,7 @@ export default function EmailForm({ onGenerate, defaultEmail = '' }: EmailFormPr
         onClick={handleShowQR}
         disabled={!!error || !emailData.to.trim()}
       >
-        QR Kod Oluştur
+        Create QR Code
       </Button>
     </Stack>
   )
