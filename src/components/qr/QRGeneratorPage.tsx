@@ -8,6 +8,10 @@ import { StyledTab, StyledTabs } from './styles/StyledTabs'
 import TabPanel from './TabPanel'
 import URLForm from './forms/URLForms'
 import WifiForm from './forms/WifiForm'
+import EmailForm from './forms/EmailForm'
+import TextForm from './forms/TextForm'
+import PhoneForm from './forms/PhoneForm'
+import LocationForm from './forms/LocationForm'
 
 interface TabItem {
   icon: JSX.Element
@@ -22,11 +26,11 @@ export default function QRGeneratorPage() {
 
   const tabs: TabItem[] = [
     { icon: <Language />, label: 'URL', component: <URLForm maxUrlLength={1000} /> },
-    { icon: <TextFields />, label: 'Text', component: <URLForm maxUrlLength={1000} /> },
-    { icon: <Email />, label: 'Email', component: <URLForm maxUrlLength={1000} /> },
-    { icon: <Phone />, label: 'Phone', component: <URLForm maxUrlLength={1000} /> },
+    { icon: <TextFields />, label: 'Text', component: <TextForm /> },
+    { icon: <Email />, label: 'Email', component: <EmailForm defaultEmail='example@gmail.com' /> },
+    { icon: <Phone />, label: 'Phone', component: <PhoneForm /> },
     { icon: <Wifi />, label: 'Wi-Fi', component: <WifiForm /> },
-    { icon: <LocationOn />, label: 'Location', component: <WifiForm /> }
+    { icon: <LocationOn />, label: 'Location', component: <LocationForm /> }
   ]
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {

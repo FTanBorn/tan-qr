@@ -1,19 +1,20 @@
-// src/components/qr/QRGenerator.tsx
 'use client'
 
-import { Box, FormControl, FormControlLabel, Grid, Radio, RadioGroup, Slider, Stack, Typography } from '@mui/material'
+import { Box, FormControl, FormControlLabel, Radio, RadioGroup, Slider, Stack, Typography } from '@mui/material'
 import { MuiColorInput } from 'mui-color-input'
 import { qrDotShapeOptions } from '@/data/dots'
 import { useCallback, useEffect, useState } from 'react'
 import { CornerDotType, GradientType } from 'qr-code-styling'
 import { ColorType, CornersDotShapeOption, GradientConfig } from '../../types'
+import { ShapeButton, StyledSection } from '../../styles/QrCodeOptions'
 
 const DotShape = ({ type }: { type: CornersDotShapeOption['type'] }) => {
   const getShapeStyles = () => {
     const baseStyles = {
       width: 24,
       height: 24,
-      backgroundColor: '#000'
+      backgroundColor: '#000',
+      transition: 'all 0.2s ease-in-out'
     }
 
     switch (type) {
@@ -33,25 +34,28 @@ interface CustomizeProps {
   cornersDotColor: string
   cornersDotType: CornerDotType
   cornersDotGradient: GradientConfig | null
-
   setCornersDotColor: (color: string) => void
   setCornersDotType: (val: CornerDotType) => void
   setCornersDotGradient: (gradient: GradientConfig | null) => void
 }
 
 export default function QrCodeCornersDotOptions(props: CustomizeProps) {
-  const { cornersDotColor, cornersDotType } = props
-  const { setCornersDotColor, setCornersDotGradient, setCornersDotType } = props
+  const { cornersDotColor, cornersDotType, setCornersDotColor, setCornersDotGradient, setCornersDotType } = props
 
+  // State declarations
   const [colorType, setColorType] = useState<ColorType>('single')
   const [gradientType, setGradientType] = useState<GradientType>('linear')
   const [gradientColorOne, setGradientColorOne] = useState('#000000')
   const [gradientColorTwo, setGradientColorTwo] = useState('#4B0082')
   const [gradientRotation, setGradientRotation] = useState(0)
 
-  const handleChangeDotColor = (color: string) => {
-    setCornersDotColor(color)
-  }
+  // Event handlers
+  const handleChangeDotColor = useCallback(
+    (color: string) => {
+      setCornersDotColor(color)
+    },
+    [setCornersDotColor]
+  )
 
   const handleChangeGradientColorOne = useCallback((color: string) => {
     setGradientColorOne(color)
@@ -61,20 +65,7 @@ export default function QrCodeCornersDotOptions(props: CustomizeProps) {
     setGradientColorTwo(color)
   }, [])
 
-  const handleChangeColorType = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value as ColorType
-    setColorType(value)
-  }
-
-  const handleChangeGradientType = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value as 'linear' | 'radial'
-    setGradientType(value)
-  }
-
-  const handleChangeGradientRotation = (event: Event, newValue: number | number[]) => {
-    setGradientRotation(newValue as number)
-  }
-
+  // Gradient effect
   useEffect(() => {
     if (colorType === 'gradient') {
       const gradientConfig: GradientConfig = {
@@ -92,112 +83,95 @@ export default function QrCodeCornersDotOptions(props: CustomizeProps) {
   }, [colorType, gradientType, gradientColorOne, gradientColorTwo, gradientRotation, setCornersDotGradient])
 
   return (
-    <Grid container p={1} spacing={2}>
-      <Stack direction={'row'} spacing={0.5} mt={1} alignItems={'center'}>
-        <Typography>Dot Options:</Typography>
-        {qrDotShapeOptions.map(shape => (
-          <Box
-            key={shape.id}
-            onClick={() => setCornersDotType(shape.type)}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              padding: 1,
-              mr: 2,
-              border: cornersDotType === shape.type ? '1px solid #000' : '1px solid #e0e0e0',
-              borderRadius: 1,
-              '&:hover': {
-                backgroundColor: '#f5f5f5',
-                cursor: 'pointer'
-              }
-            }}
-          >
-            <DotShape type={shape.type} />
-          </Box>
-        ))}
-      </Stack>
+    <Box sx={{ p: 2 }}>
+      {/* Shape Selection */}
+      <StyledSection>
+        <Typography variant='subtitle1'>Dot Shape</Typography>
+        <Stack direction='row' spacing={2}>
+          {qrDotShapeOptions.map(shape => (
+            <ShapeButton
+              key={shape.id}
+              onClick={() => setCornersDotType(shape.type)}
+              className={cornersDotType === shape.type ? 'selected' : ''}
+            >
+              <DotShape type={shape.type} />
+            </ShapeButton>
+          ))}
+        </Stack>
+      </StyledSection>
 
-      <Stack direction={'row'} spacing={0.5} mt={1} alignItems={'center'}>
-        <Typography>Color Type:</Typography>
+      {/* Color Type Selection */}
+      <StyledSection>
+        <Typography variant='subtitle1'>Color Type</Typography>
         <FormControl>
-          <RadioGroup
-            aria-labelledby='demo-controlled-radio-buttons-group'
-            name='controlled-radio-buttons-group'
-            value={colorType}
-            onChange={handleChangeColorType}
-          >
-            <Stack direction={'row'} spacing={2}>
-              <FormControlLabel value='single' control={<Radio />} label='Single Color' />
-              <FormControlLabel value='gradient' control={<Radio />} label='Color gradient' />
-            </Stack>
+          <RadioGroup row value={colorType} onChange={e => setColorType(e.target.value as ColorType)}>
+            <FormControlLabel value='single' control={<Radio />} label='Single Color' />
+            <FormControlLabel value='gradient' control={<Radio />} label='Gradient' />
           </RadioGroup>
         </FormControl>
-      </Stack>
 
-      {colorType === 'single' ? (
-        <Stack direction={'row'} spacing={0.5} mt={1} alignItems={'center'}>
-          <Typography>Dot Color:</Typography>
-          <MuiColorInput
-            sx={{ width: '200 px' }}
-            size='small'
-            placeholder='Color'
-            value={cornersDotColor}
-            onChange={handleChangeDotColor}
-          />
-        </Stack>
-      ) : (
-        <Stack direction={'column'} spacing={0.5}>
-          <Stack direction={'row'} alignItems={'center'}>
-            <Typography>Gradient Type:</Typography>
+        {/* Color Selection */}
+        {colorType === 'single' ? (
+          <Stack direction='row' spacing={2} alignItems='center'>
+            <Typography>Color:</Typography>
+            <MuiColorInput
+              value={cornersDotColor}
+              onChange={handleChangeDotColor}
+              size='small'
+              sx={{ minWidth: 200 }}
+            />
+          </Stack>
+        ) : (
+          <Stack spacing={3}>
+            {/* Gradient Type */}
             <FormControl>
-              <RadioGroup
-                aria-labelledby='demo-controlled-radio-buttons-group'
-                name='controlled-radio-buttons-group'
-                value={gradientType}
-                onChange={handleChangeGradientType}
-              >
-                <Stack direction={'row'} spacing={2}>
-                  <FormControlLabel value='linear' control={<Radio />} label='Linear' />
-                  <FormControlLabel value='radial' control={<Radio />} label='Radial' />
-                </Stack>
+              <Typography variant='subtitle2' gutterBottom>
+                Gradient Type
+              </Typography>
+              <RadioGroup row value={gradientType} onChange={e => setGradientType(e.target.value as GradientType)}>
+                <FormControlLabel value='linear' control={<Radio />} label='Linear' />
+                <FormControlLabel value='radial' control={<Radio />} label='Radial' />
               </RadioGroup>
             </FormControl>
-          </Stack>
 
-          <Stack direction={'row'}>
-            <Typography>Dots Gradient:</Typography>
-            <MuiColorInput
-              sx={{ width: '200 px' }}
-              size='small'
-              placeholder='Color'
-              value={gradientColorOne}
-              onChange={handleChangeGradientColorOne}
-            />
-            <MuiColorInput
-              sx={{ width: '200 px' }}
-              size='small'
-              placeholder='Color'
-              value={gradientColorTwo}
-              onChange={handleChangeGradientColorTwo}
-            />
+            {/* Gradient Colors */}
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+              <MuiColorInput
+                label='Color 1'
+                value={gradientColorOne}
+                onChange={handleChangeGradientColorOne}
+                size='small'
+                sx={{ minWidth: 200 }}
+              />
+              <MuiColorInput
+                label='Color 2'
+                value={gradientColorTwo}
+                onChange={handleChangeGradientColorTwo}
+                size='small'
+                sx={{ minWidth: 200 }}
+              />
+            </Stack>
+
+            {/* Gradient Rotation */}
+            {gradientType === 'linear' && (
+              <Box>
+                <Typography variant='subtitle2' gutterBottom>
+                  Angle: {gradientRotation}°
+                </Typography>
+                <Slider
+                  value={gradientRotation}
+                  onChange={(_, value) => setGradientRotation(value as number)}
+                  valueLabelDisplay='auto'
+                  step={30}
+                  marks
+                  min={0}
+                  max={360}
+                />
+              </Box>
+            )}
           </Stack>
-          <Stack direction={'row'} spacing={2}>
-            <Typography>Rotation:</Typography>
-            <Slider
-              aria-label='Temperature'
-              value={gradientRotation}
-              onChange={handleChangeGradientRotation}
-              valueLabelDisplay='auto'
-              shiftStep={30}
-              step={30}
-              marks
-              min={0}
-              max={360}
-            />
-          </Stack>
-        </Stack>
-      )}
-    </Grid>
+        )}
+      </StyledSection>
+    </Box>
   )
 }

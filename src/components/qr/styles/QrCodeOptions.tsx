@@ -37,3 +37,8 @@ export const ColorSection = styled(Stack)(({ theme }) => ({
     flexDirection: 'column'
   }
 }))
+
+export const StyledSection = styled(Stack)(({ theme }) => ({
+  marginTop: theme.spacing(2),
+  gap: theme.spacing(2)
+}))
